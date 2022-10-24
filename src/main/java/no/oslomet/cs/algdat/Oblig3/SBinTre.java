@@ -20,6 +20,8 @@ public class SBinTre<T> {
             this.forelder = forelder;
         }
 
+        // Kommentar
+
         private Node(T verdi, Node<T> forelder)  // konstruktør
         {
             this(verdi, null, null, forelder);
