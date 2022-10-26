@@ -1,10 +1,7 @@
 package no.oslomet.cs.algdat.Oblig3;
 
 
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.Objects;
-import java.util.StringJoiner;
+import java.util.*;
 
 public class SBinTre<T> {
     private static final class Node<T>   // en indre nodeklasse
@@ -48,6 +45,7 @@ public class SBinTre<T> {
         comp = c;
     }
 
+    // oppgave 2
     public boolean inneholder(T verdi) {
         if (verdi == null) return false;
 
@@ -63,6 +61,7 @@ public class SBinTre<T> {
         return false;
     }
 
+    // Oppgave 2
     public int antall() {
         return antall;
     }
@@ -81,10 +80,12 @@ public class SBinTre<T> {
         return s.toString();
     }
 
+    // Oppgave 2
     public boolean tom() {
         return antall == 0;
     }
 
+    // Oppgave 1
     public boolean leggInn(T verdi) {
         Objects.requireNonNull(verdi, "Ulovlig med nullverdier!");
 
@@ -120,32 +121,119 @@ public class SBinTre<T> {
         throw new UnsupportedOperationException("Ikke kodet ennå!");
     }
 
+    // Oppgave 2
     public int antall(T verdi) {
-        throw new UnsupportedOperationException("Ikke kodet ennå!");
+        // Koden er hentet fra kompendiet.
+        Node<T> p = rot;
+
+        int antallVerdi = 0;
+
+        while (p != null){
+            int cmp = comp.compare(verdi, p.verdi);
+            if (cmp < 0){
+                p = p.venstre;
+            } else {
+                if (cmp == 0){
+                    antallVerdi++;
+                    p = p.høyre;
+                }
+            }
+        }
+        return antallVerdi;
+
+        // throw new UnsupportedOperationException("Ikke kodet ennå!");
     }
 
     public void nullstill() {
         throw new UnsupportedOperationException("Ikke kodet ennå!");
     }
 
+    // Oppgave 3
     private static <T> Node<T> førstePostorden(Node<T> p) {
-        throw new UnsupportedOperationException("Ikke kodet ennå!");
+        // Programkode 5.1.7 h) + endringer
+        if (p == null){
+            throw new NoSuchElementException("Treet er tomt!");
+        }
+
+        // Node<T> p = rot;
+
+        while (true){
+            if (p.venstre != null){
+                p = p.venstre;
+            } else if (p.høyre != null){
+                p = p.høyre;
+            } else {
+                return p;
+            }
+        }
+
+        // throw new UnsupportedOperationException("Ikke kodet ennå!");
     }
 
+    // Oppgave 3
     private static <T> Node<T> nestePostorden(Node<T> p) {
-        throw new UnsupportedOperationException("Ikke kodet ennå!");
+        if (p == null){
+            throw new NoSuchElementException("Treet er tomt!");
+        }
+
+        if (p.forelder == null){
+            p = null;
+        } else if (p.forelder.høyre == p) {
+            p = p.forelder;
+        } else if (p.forelder.venstre == p) {
+            if (p.forelder.høyre == null){
+                p = p.forelder;
+            } else {
+                p = førstePostorden(p.forelder.høyre);
+            }
+        }
+
+        return p;
+
+        // throw new UnsupportedOperationException("Ikke kodet ennå!");
     }
 
+    // Oppgave 4
     public void postorden(Oppgave<? super T> oppgave) {
-        throw new UnsupportedOperationException("Ikke kodet ennå!");
+        if (rot == null){
+            return; // tomt tre
+        }
+
+        Node<T> q = førstePostorden(rot);
+
+        oppgave.utførOppgave(q.verdi);
+
+        Node<T> r = nestePostorden(q);
+
+        while (r != null){
+            oppgave.utførOppgave(r.verdi);
+            r = nestePostorden(r);
+        }
+
+        // throw new UnsupportedOperationException("Ikke kodet ennå!");
     }
 
     public void postordenRecursive(Oppgave<? super T> oppgave) {
         postordenRecursive(rot, oppgave);
     }
 
+    // Oppgave 4
     private void postordenRecursive(Node<T> p, Oppgave<? super T> oppgave) {
-        throw new UnsupportedOperationException("Ikke kodet ennå!");
+        if (p == null){
+            return;
+        }
+
+        if (p.høyre != null){
+            postordenRecursive(p.høyre, oppgave);
+        }
+
+        if (p.venstre != null){
+            postordenRecursive(p.venstre, oppgave);
+        }
+
+        oppgave.utførOppgave(p.verdi);
+
+        // throw new UnsupportedOperationException("Ikke kodet ennå!");
     }
 
     public ArrayList<T> serialize() {
