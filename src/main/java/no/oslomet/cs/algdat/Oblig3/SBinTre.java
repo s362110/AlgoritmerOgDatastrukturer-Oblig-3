@@ -236,12 +236,40 @@ public class SBinTre<T> {
         // throw new UnsupportedOperationException("Ikke kodet ennå!");
     }
 
+    // Oppgave 5
     public ArrayList<T> serialize() {
-        throw new UnsupportedOperationException("Ikke kodet ennå!");
+        ArrayList<T> list = new ArrayList<>();
+        ArrayDeque<Node> kø = new ArrayDeque<>();
+
+        kø.addLast(rot);
+        while (!kø.isEmpty()){
+            Node<T> current = kø.removeFirst();
+
+            if (current.høyre != null){
+                kø.addLast(current.høyre);
+            }
+
+            if (current.venstre != null){
+                kø.addLast(current.venstre);
+            }
+
+            list.add(current.verdi);
+        }
+
+        return list;
+        // throw new UnsupportedOperationException("Ikke kodet ennå!");
     }
 
+    // Oppgave 5
     static <K> SBinTre<K> deserialize(ArrayList<K> data, Comparator<? super K> c) {
-        throw new UnsupportedOperationException("Ikke kodet ennå!");
+        SBinTre<K> tre2 = new SBinTre<>(c);
+
+        for (int i = 0; i < data.size(); ++i){
+            tre2.leggInn(data.get(i));
+        }
+        return tre2;
+
+        // throw new UnsupportedOperationException("Ikke kodet ennå!");
     }
 
 
