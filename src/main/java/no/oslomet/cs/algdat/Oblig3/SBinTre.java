@@ -194,7 +194,7 @@ public class SBinTre<T> {
         // Koden er hentet fra kompendiet.
         Node<T> p = rot;
 
-        int antallVerdi = 0;
+        int antallVerdiForekomst = 0;
 
         while (p != null){
             int cmp = comp.compare(verdi, p.verdi);
@@ -202,12 +202,12 @@ public class SBinTre<T> {
                 p = p.venstre;
             } else {
                 if (cmp == 0){
-                    antallVerdi++;
+                    antallVerdiForekomst++;
                     p = p.høyre;
                 }
             }
         }
-        return antallVerdi;
+        return antallVerdiForekomst;
 
         // throw new UnsupportedOperationException("Ikke kodet ennå!");
     }
@@ -218,7 +218,7 @@ public class SBinTre<T> {
             nullstill(rot);
         }
 
-        rot = null;
+        rot = null; // Står i oppgaveteksten at det ikke er tilstrekkelig å sette rot til null og antall til 0.
         antall = 0;
         endringer++;
 
