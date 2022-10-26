@@ -113,12 +113,80 @@ public class SBinTre<T> {
         // throw new UnsupportedOperationException("Ikke kodet ennå!");
     }
 
+    // Oppgave 6
     public boolean fjern(T verdi) {
-        throw new UnsupportedOperationException("Ikke kodet ennå!");
+        if (verdi == null){
+            return false;  // treet har ingen nullverdier
+        }
+
+        Node<T> p = rot, q = null;   // q skal være forelder til p
+
+        while (p != null){          // leter etter verdi
+            int cmp = comp.compare(verdi,p.verdi);      // sammenligner
+            if (cmp < 0) {
+                q = p;
+                p = p.venstre;      // går til venstre
+            } else if (cmp > 0) {
+                q = p;
+                p = p.høyre;   // går til høyre
+            } else {
+                break;    // den søkte verdien ligger i p
+            }
+        }
+        if (p == null){
+            return false;   // finner ikke verdi
+        }
+
+        if (p.venstre == null || p.høyre == null){ // Tilfelle 1) og 2)
+            Node<T> b = p.venstre != null ? p.venstre : p.høyre;  // b for barn
+            if (p == rot){
+                rot = b;
+            } else if (p == q.venstre){
+                q.venstre = b;
+                if (b != null){ //
+                    b.forelder = q; //
+                }
+            } else{
+                q.høyre = b;
+            }
+
+            if (b != null){
+                b.forelder = q;
+            }
+        } else{  // Tilfelle 3)
+            Node<T> s = p, r = p.høyre;   // finner neste i inorden
+            while (r.venstre != null){
+                s = r;    // s er forelder til r
+                r = r.venstre;
+            }
+
+            p.verdi = r.verdi;   // kopierer verdien i r til p
+
+            if (s != p){
+                s.venstre = r.høyre;
+            } else{
+                s.høyre = r.høyre;
+            }
+        }
+
+        antall--;   // det er nå én node mindre i treet
+        endringer++;
+        return true;
+
+        // throw new UnsupportedOperationException("Ikke kodet ennå!");
     }
 
+    // Oppgave 6
     public int fjernAlle(T verdi) {
-        throw new UnsupportedOperationException("Ikke kodet ennå!");
+        int antallForekomsterFjernet = 0;
+        if (!tom()){
+            while (fjern(verdi)){
+                antallForekomsterFjernet++;
+            }
+        }
+
+        return antallForekomsterFjernet;
+        // throw new UnsupportedOperationException("Ikke kodet ennå!");
     }
 
     // Oppgave 2
@@ -144,8 +212,27 @@ public class SBinTre<T> {
         // throw new UnsupportedOperationException("Ikke kodet ennå!");
     }
 
+    // Oppgave 6
     public void nullstill() {
-        throw new UnsupportedOperationException("Ikke kodet ennå!");
+        if (!tom()){
+            nullstill(rot);
+        }
+
+        rot = null;
+        antall = 0;
+        endringer++;
+
+        // throw new UnsupportedOperationException("Ikke kodet ennå!");
+    }
+
+    private void nullstill(Node<T> rot) {
+        if (!tom()){
+            nullstill(rot);
+        }
+
+        this.rot = null;
+        antall = 0;
+        endringer = 0;
     }
 
     // Oppgave 3
