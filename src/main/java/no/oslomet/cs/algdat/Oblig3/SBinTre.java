@@ -194,6 +194,12 @@ public class SBinTre<T> {
         // Koden er hentet fra kompendiet.
         Node<T> p = rot;
 
+        /*
+        if (verdi == null){
+            return 0;
+        }
+         */
+
         int antallVerdiForekomst = 0;
 
         while (p != null){
@@ -203,8 +209,8 @@ public class SBinTre<T> {
             } else {
                 if (cmp == 0){
                     antallVerdiForekomst++;
-                    p = p.høyre;
                 }
+                p = p.høyre;
             }
         }
         return antallVerdiForekomst;
@@ -214,18 +220,25 @@ public class SBinTre<T> {
 
     // Oppgave 6
     public void nullstill() {
+        /*
         if (!tom()){
             nullstill(rot);
         }
 
-        rot = null; // Står i oppgaveteksten at det ikke er tilstrekkelig å sette rot til null og antall til 0.
+        rot = null;
         antall = 0;
         endringer++;
+         */
+        nullstill(rot);
+        rot = null;
+        antall = 0;
+        endringer = 0;
 
         // throw new UnsupportedOperationException("Ikke kodet ennå!");
     }
 
     private void nullstill(Node<T> rot) {
+        /*
         if (!tom()){
             nullstill(rot);
         }
@@ -233,6 +246,17 @@ public class SBinTre<T> {
         this.rot = null;
         antall = 0;
         endringer = 0;
+         */
+        if (rot == null){
+            return;
+        }
+
+        nullstill(rot.venstre);
+        nullstill(rot.høyre);
+        rot.verdi = null;
+        rot.venstre = null;
+        rot.høyre = null;
+        rot.forelder = null;
     }
 
     // Oppgave 3
@@ -286,11 +310,15 @@ public class SBinTre<T> {
             return; // tomt tre
         }
 
+        /*
         Node<T> q = førstePostorden(rot);
 
         oppgave.utførOppgave(q.verdi);
 
-        Node<T> r = nestePostorden(q);
+        Node<T> r = førstePostorden(q)
+         */
+
+        Node<T> r = førstePostorden(rot);
 
         while (r != null){
             oppgave.utførOppgave(r.verdi);
@@ -310,12 +338,12 @@ public class SBinTre<T> {
             return;
         }
 
-        if (p.høyre != null){
-            postordenRecursive(p.høyre, oppgave);
-        }
-
         if (p.venstre != null){
             postordenRecursive(p.venstre, oppgave);
+        }
+
+        if (p.høyre != null){
+            postordenRecursive(p.høyre, oppgave);
         }
 
         oppgave.utførOppgave(p.verdi);
@@ -332,12 +360,12 @@ public class SBinTre<T> {
         while (!kø.isEmpty()){
             Node<T> current = kø.removeFirst();
 
-            if (current.høyre != null){
-                kø.addLast(current.høyre);
-            }
-
             if (current.venstre != null){
                 kø.addLast(current.venstre);
+            }
+
+            if (current.høyre != null){
+                kø.addLast(current.høyre);
             }
 
             list.add(current.verdi);
